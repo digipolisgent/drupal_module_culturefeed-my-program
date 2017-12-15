@@ -39,7 +39,7 @@ msgstr "Tekst getoond wanneer een gebruiker /my-program bezoekt zonder dat er it
 
 #: culturefeed_my_program.page.inc:16
 msgid "You need to login before you can view your program."
-msgstr "U moet inloggen alvorens u, uw programma kan bekijken."
+msgstr "U moet inloggen alvorens u uw programma kan bekijken."
 
 #: culturefeed_my_program.page.inc:25
 msgid "No items have been added to your program yet."
