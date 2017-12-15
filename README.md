@@ -21,7 +21,8 @@ in your theme.
 
 ## Usage
 * All logged in users can add events to their my program via the added button.
-* All logged in users can view the `/my-program` page to view, clear or print their program.
+* All logged in users can view the `/my-program` page to view, clear or print
+  their program.
 
 
 [link-culturefeed]: https://github.com/cultuurnet/culturefeed
