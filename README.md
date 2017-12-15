@@ -6,7 +6,8 @@ This Drupal module extends the
 It adds the functionality to create a personal list of events a person would
 like to attend.
 
-> **NOTE** : Items are automatically removed once they are passed via a cron hook.
+> **NOTE** : Items are automatically removed once they are passed via a cron
+hook.
 
 
 ## Requirements
@@ -15,7 +16,8 @@ like to attend.
 ## Installation
 * [Install culturefeed module suite][link-culturefeed-install].
 * Enable this module (culturefeed_my_program).
-* Add `<?php print $add_to_my_program; ?>` to the `culturefeed-event.tpl.php` in your theme.
+* Add `<?php print $add_to_my_program; ?>` to the `culturefeed-event.tpl.php`
+in your theme.
 
 ## Usage
 * All logged in users can add events to their my program via the added button.
