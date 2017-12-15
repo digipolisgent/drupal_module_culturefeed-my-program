@@ -38,7 +38,7 @@ class CulturefeedMyProgramItem {
   /**
    * CulturefeedMyProgramItem constructor.
    *
-   * The values paramter is a key value array with these values:
+   * The values parameter is a key value array with these values:
    *   - uid: The user id of the program item.
    *   - item_id: Id of the culturefeed item.
    *   - end_date: The end date of the culturefeed item.
