@@ -1,7 +1,6 @@
 name = Culturefeed My Program
 description = Provides my program functionality.
 package = "Culturefeed"
-version = "7.x-1.x-dev"
 core = 7.x
 
 dependencies[] = culturefeed_agenda
