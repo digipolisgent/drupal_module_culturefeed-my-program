@@ -1,0 +1,334 @@
+<?php
+
+/**
+ * @file
+ * Tests for culturefeed_my_program.
+ */
+
+/**
+ * Defines a base class for testing the culturefeed_my_program module.
+ */
+class CulturefeedMyProgramWebTestCase extends DrupalWebTestCase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUp() {
+    parent::setUp(['culturefeed_my_program']);
+  }
+
+}
+
+/**
+ * Test CulturefeedMyProgramItem class.
+ */
+class CulturefeedMyProgramItemTestCase extends CulturefeedMyProgramWebTestCase {
+
+  /**
+   * Info.
+   */
+  public static function getInfo() {
+    return [
+      'name' => 'Test CulturefeedMyProgramItem',
+      'description' => 'Test CulturefeedMyProgramItem class.',
+      'group' => 'CulturefeedMyProgram',
+    ];
+  }
+
+  /**
+   * Test item create.
+   */
+  public function testItemCreate() {
+    $values = [
+      'uid' => 666,
+      'item_id' => '64ce03c7-4c89-4867-bf66-1b45bc5fdc27',
+      'end_date' => time(),
+      'last_updated' => time(),
+    ];
+
+    $item = new CulturefeedMyProgramItem($values);
+    $this->assertEqual($values['uid'], $item->getUid(), 'Uid is correctly set.');
+    $this->assertEqual($values['item_id'], $item->getItemId(), 'Item ID is correctly set.');
+    $this->assertEqual($values['end_date'], $item->getEndDate(), 'End date is correclty set.');
+    $this->assertEqual($values['last_updated'], $item->getLastUpdated(), 'Last updated date is correctly set.');
+  }
+
+  /**
+   * Test item save and load.
+   */
+  public function testItemSave() {
+    $values = [
+      'uid' => 666,
+      'item_id' => '64ce03c7-4c89-4867-bf66-1b45bc5fdc27',
+      'end_date' => time(),
+      'last_updated' => time(),
+    ];
+
+    $item = new CulturefeedMyProgramItem($values);
+    $item->save();
+
+    $db_item = CulturefeedMyProgramItem::load($values['uid'], $values['item_id']);
+    $this->assertEqual($values['uid'], $db_item->getUid(), 'Uid is correctly saved.');
+    $this->assertEqual($values['item_id'], $db_item->getItemId(), 'Item ID is correctly saved.');
+    $this->assertEqual($values['end_date'], $db_item->getEndDate(), 'End date is correclty saved.');
+    $this->assertEqual($values['last_updated'], $db_item->getLastUpdated(), 'Last updated date is correctly saved.');
+  }
+
+  /**
+   * Test item delete.
+   */
+  public function testItemDelete() {
+    $values = [
+      'uid' => 666,
+      'item_id' => '64ce03c7-4c89-4867-bf66-1b45bc5fdc27',
+      'end_date' => time(),
+      'last_updated' => time(),
+    ];
+
+    $item = new CulturefeedMyProgramItem($values);
+    $item->save();
+    $item->delete();
+
+    $this->assertNull(CulturefeedMyProgramItem::load($values['uid'], $values['item_id']));
+  }
+
+}
+
+/**
+ * Test CulturefeedMyProgram class.
+ */
+class CulturefeedMyProgramTestCase extends CulturefeedMyProgramWebTestCase {
+
+  /**
+   * Info.
+   */
+  public static function getInfo() {
+    return [
+      'name' => 'Test CulturefeedMyProgram',
+      'description' => 'Test CulturefeedMyProgram class',
+      'group' => 'CulturefeedMyProgram',
+    ];
+  }
+
+  /**
+   * Test item save and load.
+   */
+  public function testGetItems() {
+    $user = new stdClass();
+    $user->uid = 666;
+
+    $values = [
+      [
+        'uid' => $user->uid,
+        'item_id' => '64ce03c7-4c89-4867-bf66-1b45bc5fdc27',
+        'end_date' => time(),
+        'last_updated' => time(),
+      ],
+      [
+        'uid' => $user->uid,
+        'item_id' => '54ce03c7-4c89-4867-bf66-1b45bc5fdc28',
+        'end_date' => time(),
+        'last_updated' => time(),
+      ],
+    ];
+    $item = new CulturefeedMyProgramItem($values[0]);
+    $item->save();
+    $item = new CulturefeedMyProgramItem($values[1]);
+    $item->save();
+
+    $my_program = new CulturefeedMyProgram($user);
+    $items = $my_program->getItems();
+    $this->assertTrue(isset($items[$values[0]['item_id']]));
+    $this->assertTrue(isset($items[$values[1]['item_id']]));
+  }
+
+  /**
+   * Test delete all items.
+   */
+  public function testDeleteAllItems() {
+    $user = new stdClass();
+    $user->uid = 666;
+
+    $values = [
+      [
+        'uid' => $user->uid,
+        'item_id' => '64ce03c7-4c89-4867-bf66-1b45bc5fdc27',
+        'end_date' => time(),
+        'last_updated' => time(),
+      ],
+      [
+        'uid' => $user->uid,
+        'item_id' => '54ce03c7-4c89-4867-bf66-1b45bc5fdc28',
+        'end_date' => time(),
+        'last_updated' => time(),
+      ],
+    ];
+    $item = new CulturefeedMyProgramItem($values[0]);
+    $item->save();
+    $item = new CulturefeedMyProgramItem($values[1]);
+    $item->save();
+
+    $my_program = new CulturefeedMyProgram($user);
+    $my_program->deleteAllItems();
+    $this->assertTrue(empty($my_program->getItems()), 'Items are cleared after delete.');
+
+    $this->assertNull(CulturefeedMyProgramItem::load(666, $values[0]['item_id']), 'Item one deleted from DB.');
+    $this->assertNull(CulturefeedMyProgramItem::load(666, $values[1]['item_id']), 'Item two deleted from DB.');
+
+    $db_my_program = new CulturefeedMyProgram($user);
+    $this->assertTrue(empty($db_my_program->getItems()), 'No items left in DB.');
+  }
+
+}
+
+/**
+ * Test my program page.
+ */
+class CulturefeedMyProgramPageTestCase extends CulturefeedMyProgramWebTestCase {
+
+  /**
+   * Info.
+   */
+  public static function getInfo() {
+    return [
+      'name' => 'Test my program page',
+      'description' => 'Test items overview on the my program page',
+      'group' => 'CulturefeedMyProgram',
+    ];
+  }
+
+  /**
+   * Test culturefeed_my_program_page() output.
+   */
+  public function testCulturefeedMyProgramPageLoginFirstTest() {
+    $this->drupalGet('my-program');
+    $this->assertResponse(200, 'User is allowed to view my program.');
+    $this->assertText('You need to login before you can view your program.', 'User gets default info text to login first.');
+
+    $string = self::randomName();
+    variable_set('culturefeed_my_program_login_text', $string);
+    $this->drupalGet('my-program');
+    $this->assertText($string, 'User gets login text from variable.');
+  }
+
+  /**
+   * Test culturefeed_my_program_page() output.
+   */
+  public function testCulturefeedMyProgramPageEmptyTest() {
+    global $user;
+
+    $user = $this->drupalCreateUser(['access content']);
+    $this->drupalLogin($user);
+    $this->drupalGet('my-program');
+
+    $this->assertResponse(200, 'User is allowed to view my program.');
+    $this->assertText('No items have been added to your program yet.', 'User gets text to indicate my program is empty.');
+
+    $string = self::randomName();
+    variable_set('culturefeed_my_program_empty_text', $string);
+    $this->drupalGet('my-program');
+    $this->assertText($string, 'User gets empty text from variable.');
+  }
+
+  /**
+   * Test culturefeed_my_program_page() output.
+   */
+  public function testCulturefeedMyProgramPageItems() {
+    global $user;
+
+    $user = $this->drupalCreateUser(['access content']);
+    $this->drupalLogin($user);
+
+    $values = [
+      [
+        'uid' => $user->uid,
+        'item_id' => '64ce03c7-4c89-4867-bf66-1b45bc5fdc27',
+        'end_date' => time(),
+        'last_updated' => time(),
+      ],
+      [
+        'uid' => $user->uid,
+        'item_id' => '54ce03c7-4c89-4867-bf66-1b45bc5fdc28',
+        'end_date' => time(),
+        'last_updated' => time(),
+      ],
+    ];
+    $item = new CulturefeedMyProgramItem($values[0]);
+    $item->save();
+    $item = new CulturefeedMyProgramItem($values[1]);
+    $item->save();
+
+    // Mock culturefeed_search_item_load to avoid callbacks to the API.
+    $items = &drupal_static('culturefeed_search_item_load', []);
+    $items[$values[0]['item_id']] = NULL;
+    $items[$values[1]['item_id']] = NULL;
+
+    module_load_include('inc', 'culturefeed_my_program', 'culturefeed_my_program.page');
+    $output = culturefeed_my_program_page();
+
+    $this->assertTrue(isset($output['#items']['item-64ce03c7-4c89-4867-bf66-1b45bc5fdc27']), 'Item one is found');
+    $this->assertTrue(isset($output['#items']['item-54ce03c7-4c89-4867-bf66-1b45bc5fdc28']), 'Item two is found');
+  }
+
+}
+
+/**
+ * Test my program page.
+ */
+class CulturefeedMyProgramCronTestCase extends CulturefeedMyProgramWebTestCase {
+
+  /**
+   * Info.
+   */
+  public static function getInfo() {
+    return [
+      'name' => 'Test cron hook',
+      'description' => 'Test cron functions (e.g. DB maintenance)',
+      'group' => 'CulturefeedMyProgram',
+    ];
+  }
+
+  /**
+   * Test _culturefeed_my_program_cron_delete_passed_events().
+   */
+  public function testCulturefeedMyProgramCronDeletePassedEvents() {
+    $values = [
+      [
+        'uid' => 666,
+        'item_id' => '64ce03c7-4c89-4867-bf66-1b45bc5fdc27',
+        'end_date' => time() - 600,
+        'last_updated' => time(),
+      ],
+      [
+        'uid' => 666,
+        'item_id' => '54ce03c7-4c89-4867-bf66-1b45bc5fdc28',
+        'end_date' => time() - 600,
+        'last_updated' => time() - 1200,
+      ],
+      [
+        'uid' => 666,
+        'item_id' => '44ce03c7-4c89-4867-bf66-1b45bc5fdc29',
+        'end_date' => time() + 600,
+        'last_updated' => time(),
+      ],
+    ];
+    $item = new CulturefeedMyProgramItem($values[0]);
+    $item->save();
+    $item = new CulturefeedMyProgramItem($values[1]);
+    $item->save();
+    $item = new CulturefeedMyProgramItem($values[2]);
+    $item->save();
+
+    _culturefeed_my_program_cron_delete_passed_events(600);
+
+    $this->assertNull(CulturefeedMyProgramItem::load(666, $values[0]['item_id']), 'Item one deleted from DB.');
+    // Item two should still be in the DB because last_updated time is to old.
+    $item2 = CulturefeedMyProgramItem::load(666, $values[1]['item_id']);
+    $this->assertEqual(CulturefeedMyProgramItem::class, get_class($item2), 'Item two still in DB.');
+    // Item three should still be in the DB because the end_date is still in the
+    // future.
+    $item3 = CulturefeedMyProgramItem::load(666, $values[2]['item_id']);
+    $this->assertEqual(CulturefeedMyProgramItem::class, get_class($item3), 'Item three still in DB.');
+  }
+
+}

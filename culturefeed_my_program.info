@@ -1,0 +1,11 @@
+name = Culturefeed My Program
+description = Provides my program functionality.
+package = "Culturefeed"
+version = "7.x-1.x-dev"
+core = 7.x
+
+dependencies[] = culturefeed_agenda
+
+files[] = lib/CulturefeedMyProgram.php
+files[] = lib/CulturefeedMyProgramItem.php
+files[] = culturefeed_my_program.test

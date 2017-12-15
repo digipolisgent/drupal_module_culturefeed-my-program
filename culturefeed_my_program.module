@@ -1,0 +1,278 @@
+<?php
+
+/**
+ * @file
+ * Module functionality.
+ */
+
+define('CULTUREFEED_MY_PROGRAM_ADMIN_PATH', 'admin/config/culturefeed/my-program');
+define('CULTUREFEED_MY_PROGRAM_PERMISSION_ADMINISTER', 'manage culturefeed my program settings');
+
+/**
+ * Implements hook_menu().
+ */
+function culturefeed_my_program_menu() {
+  $file = 'culturefeed_my_program.page.inc';
+  $admin_file = 'culturefeed_my_program.admin.inc';
+
+  $items['my-program'] = [
+    'title' => 'My program',
+    'page callback' => 'culturefeed_my_program_page',
+    'access arguments' => ['access content'],
+    'file' => $file,
+    'type' => MENU_NORMAL_ITEM,
+    'menu_name' => 'main-menu',
+    'weight' => -1,
+  ];
+
+  $items[CULTUREFEED_MY_PROGRAM_ADMIN_PATH] = [
+    'title' => 'CultureFeed My program',
+    'description' => 'Administer my program configuration.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['culturefeed_my_program_admin_form'],
+    'access arguments' => [CULTUREFEED_MY_PROGRAM_PERMISSION_ADMINISTER],
+    'file' => $admin_file,
+    'type' => MENU_NORMAL_ITEM,
+  ];
+
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function culturefeed_my_program_permission() {
+  return [
+    CULTUREFEED_MY_PROGRAM_PERMISSION_ADMINISTER => [
+      'title' => t('Administer CultureFeed My program settings'),
+      'description' => t('Manage CultureFeed My program settings.'),
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme().
+ */
+function culturefeed_my_program_theme() {
+  $theme['culturefeed_my_program_list'] = [
+    'variables' => ['items' => []],
+    'template' => 'culturefeed-my-program-list',
+  ];
+  $theme['culturefeed_my_program_item_summary'] = [
+    'variables' => ['item' => NULL],
+    'template' => 'culturefeed-my-program-item-summary',
+  ];
+
+  return $theme;
+}
+
+/**
+ * Implements hook_preprocess_culturefeed_my_program_list().
+ */
+function culturefeed_my_program_preprocess_culturefeed_my_program_list(&$variables) {
+  $form = drupal_get_form('culturefeed_my_program_remove_all_form');
+  $variables['clear_form'] = render($form);
+}
+
+/**
+ * Implements hook_preprocess_culturefeed_my_program_item_summary().
+ *
+ * Calls to culturefeed_agendat preprocessors to add the extra variables,
+ * without duplicating the code.
+ */
+function culturefeed_my_program_preprocess_culturefeed_my_program_item_summary(&$variables) {
+  module_load_include('inc', 'culturefeed_agenda', 'theme/theme');
+  culturefeed_agenda_preprocess_culturefeed_event_short_summary($variables);
+}
+
+/**
+ * Implements hook_user_delete().
+ *
+ * Delete all my program items if user is deleted.
+ */
+function culturefeed_my_program_user_delete($account) {
+  $my_program = new CulturefeedMyProgram($account);
+  $my_program->deleteAllItems();
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function culturefeed_my_program_preprocess_culturefeed_event(&$variables) {
+  $form = drupal_get_form('culturefeed_my_program_add_form', $variables['item']->getId());
+  /* @var $item \CultuurNet\Search\ActivityStatsExtendedEntity */
+  $item = $variables['item'];
+  $variables['add_to_my_program'] = '';
+  if (strtotime($item->getEntity()->getAvailableTo()) > time()) {
+    $variables['add_to_my_program'] = render($form);
+  }
+}
+
+/**
+ * Add event to my program form.
+ */
+function culturefeed_my_program_add_form($form, &$form_state, $culturefeed_item_id) {
+  global $user;
+
+  if ($user->uid === 0) {
+    $form['submit'] = [
+      '#type' => 'submit',
+      '#post_render' => ['culturefeed_my_program_html_button'],
+      '#value' => t('Add to my program'),
+    ];
+
+    return $form;
+  }
+
+  $form['id'] = [
+    '#type' => 'hidden',
+    '#value' => $culturefeed_item_id,
+  ];
+
+  $exists = (bool) CulturefeedMyProgramItem::load($user->uid, $culturefeed_item_id);
+
+  $form['submit'] = [
+    '#type' => 'submit',
+    '#post_render' => ['culturefeed_my_program_html_button'],
+    '#value' => $exists ? t('Remove from my program') : t('Add to my program'),
+    '#submit' => $exists ? ['culturefeed_my_program_add_form_submit_remove'] : ['culturefeed_my_program_add_form_submit_add'],
+  ];
+
+  return $form;
+}
+
+/**
+ * Add event to my program form default submit handler (not logged in).
+ */
+function culturefeed_my_program_add_form_submit($form, $form_state) {
+  drupal_set_message(t('You need to login before you can add something to your program.'));
+}
+
+/**
+ * Add event to my program form add submit handler.
+ */
+function culturefeed_my_program_add_form_submit_add($form, $form_state) {
+  global $user;
+  /* @var $culturefeed_event \CultuurNet\Search\ActivityStatsExtendedEntity */
+  $culturefeed_event = culturefeed_agenda_event_load($form_state['values']['id']);
+  if ($culturefeed_event) {
+    $my_program_item = new CulturefeedMyProgramItem([
+      'uid' => $user->uid,
+      'item_id' => $culturefeed_event->getId(),
+      'end_date' => strtotime($culturefeed_event->getEntity()->getAvailableTo()),
+      'last_updated' => time(),
+    ]);
+    $my_program_item->save();
+  }
+}
+
+/**
+ * Add event to my program form remove submit handler.
+ */
+function culturefeed_my_program_add_form_submit_remove($form, $form_state) {
+  global $user;
+  $my_program_item = CulturefeedMyProgramItem::load($user->uid, $form_state['values']['id']);
+  if ($my_program_item) {
+    $my_program_item->delete();
+  }
+}
+
+/**
+ * Post render function to convert input-submit to an html button.
+ *
+ * @param string $markup
+ *   The already-rendered data.
+ * @param array $element
+ *   The data element that was rendered.
+ *
+ * @return string
+ *   The altered data.
+ */
+function culturefeed_my_program_html_button($markup, array $element) {
+  return sprintf('<button type="%s" id="%s" name="%s" class="form-%s">%s</button>', $element['#type'], $element['#id'], $element['#name'], $element['#type'], $element['#value']);
+}
+
+/**
+ * Remove all items from my program form.
+ */
+function culturefeed_my_program_remove_all_form($form, &$form_state) {
+  $form['submit'] = [
+    '#type' => 'submit',
+    '#post_render' => ['culturefeed_my_program_html_button'],
+    '#value' => t('Clear my program'),
+  ];
+
+  return $form;
+}
+
+/**
+ * Submit handler for culturefeed_my_program_remove_all().
+ */
+function culturefeed_my_program_remove_all_form_submit($form, &$form_state) {
+  $my_program = new CulturefeedMyProgram();
+  $my_program->deleteAllItems();
+}
+
+/**
+ * Implements hook_cron().
+ */
+function culturefeed_my_program_cron() {
+  $update_delay = 86400;
+
+  _culturefeed_my_program_cron_update_end_date($update_delay);
+  _culturefeed_my_program_cron_delete_passed_events($update_delay);
+}
+
+/**
+ * Helper to update the end dates of in the culturefeed_my_program table.
+ *
+ * @param int $update_delay
+ *   The minimum time in seconds before an item should be rechecked for updates.
+ * @param int $max_item
+ *   The maximum amount of items to update per run.
+ */
+function _culturefeed_my_program_cron_update_end_date($update_delay, $max_item = 10) {
+  $now = $_SERVER['REQUEST_TIME'];
+
+  // Update end_date.
+  $query = db_select(CulturefeedMyProgramItem::CULTUREFEED_MY_PROGRAM_TABLE, 'p')
+    ->fields('p')
+    ->condition('p.last_updated', $now - $update_delay, '<')
+    ->orderBy('p.last_updated')
+    ->range(0, $max_item);
+
+  foreach ($query->execute() as $row) {
+    $item = culturefeed_agenda_event_load($row->item_id);
+    $end_date = strtotime($item->getEntity()->getAvailableTo());
+
+    // Because we need to update last_updated anyway, we update the end_date
+    // regardless of whether it has changed or not.
+    db_update(CulturefeedMyProgramItem::CULTUREFEED_MY_PROGRAM_TABLE)
+      ->fields([
+        'end_date' => $end_date,
+        'last_updated' => $now,
+      ])
+      ->condition('item_id', $item->getId())
+      ->execute();
+  }
+}
+
+/**
+ * Helper to delete passed events form the culturefeed_my_program table.
+ *
+ * The $update_delay parameter is used to avoid deleting items that not been
+ * checked for updates in a long time, this avoids deleting items that have
+ * moved their end date in the future.
+ *
+ * @param int $update_delay
+ *   The timeframe in seconds when the item should have last been updated.
+ */
+function _culturefeed_my_program_cron_delete_passed_events($update_delay) {
+  $now = $_SERVER['REQUEST_TIME'];
+
+  // Remove past items from my program.
+  db_delete(CulturefeedMyProgramItem::CULTUREFEED_MY_PROGRAM_TABLE)
+    ->condition('last_updated', $now - $update_delay, '>')
+    ->condition('end_date', $now, '<')
+    ->execute();
+}

@@ -1,0 +1,94 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2017-12-14 17:43+0100\n"
+"PO-Revision-Date: 2017-12-14 17:43+0100\n"
+"Last-Translator: Wesley De Vrient <wesley.devrient@digipolis.gent>\n"
+"Language-Team: Digipolis Gent <tbweb@digpolis.gent>\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-KeywordsList: t;format_plural:2,3;watchdog:2;$t;Drupal.t;Drupal."
+"formatPlural:2,3\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: culturefeed-my-program-list.tpl.php:20
+msgid "Print program"
+msgstr "Print programma"
+
+#: culturefeed_my_program.admin.inc:22
+msgid "Login text"
+msgstr "Login tekst"
+
+#: culturefeed_my_program.admin.inc:23
+msgid "Text shown when an anonymous user visits /my-program."
+msgstr "Tekst getoond wanneer een anonieme gebruiker /my-program bezoekt."
+
+#: culturefeed_my_program.admin.inc:28
+msgid "Empty text"
+msgstr "Lege tekst"
+
+#: culturefeed_my_program.admin.inc:29
+msgid "Text shown when a user visits /my-program when there are no items in his list."
+msgstr "Tekst getoond wanneer een gebruiker /my-program bezoekt zonder dat er items zijn lijst staan."
+
+#: culturefeed_my_program.page.inc:16
+msgid "You need to login before you can view your program."
+msgstr "U moet inloggen alvorens u, uw programma kan bekijken."
+
+#: culturefeed_my_program.page.inc:25
+msgid "No items have been added to your program yet."
+msgstr "Er zijn nog geen items toegevoegd aan uw programma."
+
+#: culturefeed_my_program.module:47
+msgid "Administer CultureFeed My program settings"
+msgstr "Beheer CultureFeed Mijn programma instellingen"
+
+#: culturefeed_my_program.module:48
+msgid "Manage CultureFeed My program settings."
+msgstr "Beheer CultureFeed Mijn programma instellingen"
+
+#: culturefeed_my_program.module:121;137
+msgid "Add to my program"
+msgstr "Voeg toe aan mijn programma"
+
+#: culturefeed_my_program.module:137
+msgid "Remove from my program"
+msgstr "Verwijder uit mijn programma"
+
+#: culturefeed_my_program.module:148
+msgid "You need to login before you can add something to your program."
+msgstr "U moet inloggen alvorens u iets kan toevoegen aan uw programma."
+
+#: culturefeed_my_program.module:202
+msgid "Clear my program"
+msgstr "Maak programma leeg"
+
+#: culturefeed_my_program.module:19
+msgid "My program"
+msgstr "Mijn programma"
+
+#: culturefeed_my_program.module:29
+msgid "CultureFeed My program"
+msgstr "CultureFeed Mijn programma"
+
+#: culturefeed_my_program.module:30
+msgid "Administer my program configuration."
+msgstr "Beheer mijn programma configuratie."
+
+#: culturefeed_my_program.info:0
+msgid "Culturefeed My Program"
+msgstr "Culturefeed Mijn Programma"
+
+#: culturefeed_my_program.info:0
+msgid "Provides my program functionality."
+msgstr "Voorziet mijn programma functionaliteit"
+
+#: culturefeed_my_program.info:0
+msgid "Culturefeed"
+msgstr "Culturefeed"

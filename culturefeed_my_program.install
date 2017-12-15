@@ -1,0 +1,59 @@
+<?php
+
+/**
+ * @file
+ * Installation & Update hooks for the culturefeed_my_program module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function culturefeed_my_program_schema() {
+  $schema['culturefeed_my_program'] = [
+    'description' => 'Store my program references per user',
+    'fields' => [
+      'uid' => [
+        'description' => 'The {users}.uid that this "my program" is for.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'item_id' => [
+        'description' => 'Id of the CultureFeed item.',
+        'type' => 'char',
+        'length' => 36,
+        'not null' => TRUE,
+      ],
+      'end_date' => [
+        'description' => 'The end date of the culturefeed item.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'last_updated' => [
+        'description' => 'Last updated time the culturefeed item was checked for updates in the culturefeed api.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => ['uid', 'item_id'],
+    'foreign keys' => [
+      'program_owner' => [
+        'table' => 'users',
+        'columns' => ['uid' => 'uid'],
+      ],
+    ],
+    'indexes' => [
+      'uid' => ['uid'],
+      'item_id' => ['item_id'],
+      'end_date' => ['end_date'],
+      'last_updated' => ['last_updated'],
+    ],
+  ];
+
+  return $schema;
+}
