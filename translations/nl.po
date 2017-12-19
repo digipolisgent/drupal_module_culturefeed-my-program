@@ -22,26 +22,14 @@ msgid "Print program"
 msgstr "Print programma"
 
 #: culturefeed_my_program.admin.inc:22
-msgid "Login text"
-msgstr "Login tekst"
-
-#: culturefeed_my_program.admin.inc:23
-msgid "Text shown when an anonymous user visits /my-program."
-msgstr "Tekst getoond wanneer een anonieme gebruiker /my-program bezoekt."
-
-#: culturefeed_my_program.admin.inc:28
 msgid "Empty text"
 msgstr "Lege tekst"
 
-#: culturefeed_my_program.admin.inc:29
+#: culturefeed_my_program.admin.inc:23
 msgid "Text shown when a user visits /my-program when there are no items in his list."
 msgstr "Tekst getoond wanneer een gebruiker /my-program bezoekt zonder dat er items zijn lijst staan."
 
-#: culturefeed_my_program.page.inc:16
-msgid "You need to login before you can view your program."
-msgstr "U moet inloggen alvorens u uw programma kan bekijken."
-
-#: culturefeed_my_program.page.inc:25
+#: culturefeed_my_program.page.inc:24
 msgid "No items have been added to your program yet."
 msgstr "Er zijn nog geen items toegevoegd aan uw programma."
 
@@ -53,19 +41,27 @@ msgstr "Beheer CultureFeed Mijn programma instellingen"
 msgid "Manage CultureFeed My program settings."
 msgstr "Beheer CultureFeed Mijn programma instellingen"
 
-#: culturefeed_my_program.module:121;137
+#: culturefeed_my_program.module:131;147
 msgid "Add to my program"
 msgstr "Voeg toe aan mijn programma"
 
-#: culturefeed_my_program.module:137
+#: culturefeed_my_program.module:147
 msgid "Remove from my program"
 msgstr "Verwijder uit mijn programma"
 
-#: culturefeed_my_program.module:148
+#: culturefeed_my_program.module:158
 msgid "You need to login before you can add something to your program."
 msgstr "U moet inloggen alvorens u iets kan toevoegen aan uw programma."
 
-#: culturefeed_my_program.module:202
+#: culturefeed_my_program.module:178
+msgid "%title has been added to <a href=\"@url\">your program</a>."
+msgstr "%title is toegevoegd aan <a href=\"@url\">uw program</a>."
+
+#: culturefeed_my_program.module:194
+msgid "%title has been removed from <a href=\"@url\">your program</a>."
+msgstr "%title is verwijderd uit <a href=\"@url\">uw program</a>."
+
+#: culturefeed_my_program.module:225
 msgid "Clear my program"
 msgstr "Maak programma leeg"
 
