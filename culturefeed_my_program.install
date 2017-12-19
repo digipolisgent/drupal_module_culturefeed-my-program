@@ -57,3 +57,10 @@ function culturefeed_my_program_schema() {
 
   return $schema;
 }
+
+/**
+ * Delete login text var, switched to redirect.
+ */
+function culturefeed_update_7001() {
+  variable_del('culturefeed_my_program_login_text');
+}

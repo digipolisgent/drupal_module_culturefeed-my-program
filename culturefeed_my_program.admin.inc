@@ -17,12 +17,6 @@
  *   The form structure.
  */
 function culturefeed_my_program_admin_form(array $form, array &$form_state) {
-  $form['culturefeed_my_program_login_text'] = [
-    '#type' => 'textarea',
-    '#title' => t('Login text'),
-    '#description' => t('Text shown when an anonymous user visits /my-program.'),
-    '#default_value' => variable_get('culturefeed_my_program_login_text'),
-  ];
   $form['culturefeed_my_program_empty_text'] = [
     '#type' => 'textarea',
     '#title' => t('Empty text'),

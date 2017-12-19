@@ -12,9 +12,8 @@ function culturefeed_my_program_page() {
   global $user;
 
   if ($user->uid === 0) {
-    return [
-      '#markup' => variable_get('culturefeed_my_program_login_text', t('You need to login before you can view your program.')),
-    ];
+    drupal_goto('culturefeed/oauth/connect', ['query' => drupal_get_destination()]);
+    return FALSE;
   }
 
   $my_program = new CulturefeedMyProgram($user);

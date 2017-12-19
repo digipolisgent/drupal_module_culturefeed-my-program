@@ -200,20 +200,6 @@ class CulturefeedMyProgramPageTestCase extends CulturefeedMyProgramWebTestCase {
   /**
    * Test culturefeed_my_program_page() output.
    */
-  public function testCulturefeedMyProgramPageLoginFirstTest() {
-    $this->drupalGet('my-program');
-    $this->assertResponse(200, 'User is allowed to view my program.');
-    $this->assertText('You need to login before you can view your program.', 'User gets default info text to login first.');
-
-    $string = self::randomName();
-    variable_set('culturefeed_my_program_login_text', $string);
-    $this->drupalGet('my-program');
-    $this->assertText($string, 'User gets login text from variable.');
-  }
-
-  /**
-   * Test culturefeed_my_program_page() output.
-   */
   public function testCulturefeedMyProgramPageEmptyTest() {
     global $user;
 
