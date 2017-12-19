@@ -110,8 +110,18 @@ function culturefeed_my_program_preprocess_culturefeed_event(&$variables) {
 
 /**
  * Add event to my program form.
+ *
+ * @param array $form
+ *   The form array.
+ * @param array $form_state
+ *   The form state.
+ * @param string $culturefeed_item_id
+ *   The culturefeed item id to generate the form for.
+
+ * @return array
+ *   The form array.
  */
-function culturefeed_my_program_add_form($form, &$form_state, $culturefeed_item_id) {
+function culturefeed_my_program_add_form(array $form, array &$form_state, $culturefeed_item_id) {
   global $user;
 
   if ($user->uid === 0) {
@@ -163,6 +173,12 @@ function culturefeed_my_program_add_form_submit_add($form, $form_state) {
       'last_updated' => time(),
     ]);
     $my_program_item->save();
+
+    $detail = $culturefeed_event->getEntity()->getDetails()->getDetailByLanguage(culturefeed_search_get_preferred_language());
+    drupal_set_message(t('%title has been added to <a href="@url">your program</a>.', [
+      '%title' => $detail->getTitle(),
+      '@url' => url('my-program'),
+    ]));
   }
 }
 
@@ -173,6 +189,13 @@ function culturefeed_my_program_add_form_submit_remove($form, $form_state) {
   global $user;
   $my_program_item = CulturefeedMyProgramItem::load($user->uid, $form_state['values']['id']);
   if ($my_program_item) {
+    $culturefeed_event = culturefeed_agenda_event_load($my_program_item->getItemId());
+    $detail = $culturefeed_event->getEntity()->getDetails()->getDetailByLanguage(culturefeed_search_get_preferred_language());
+    drupal_set_message(t('%title has been removed from <a href="@url">your program</a>.', [
+      '%title' => $detail->getTitle(),
+      '@url' => url('my-program'),
+    ]));
+
     $my_program_item->delete();
   }
 }
