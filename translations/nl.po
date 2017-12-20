@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-12-20 13:57+0100\n"
-"PO-Revision-Date: 2017-12-20 13:57+0100\n"
+"POT-Creation-Date: 2017-12-20 14:11+0100\n"
+"PO-Revision-Date: 2017-12-20 14:11+0100\n"
 "Last-Translator: Wesley De Vrient <wesley.devrient@digipolis.gent>\n"
 "Language-Team: Digipolis Gent <tbweb@digpolis.gent>\n"
 "Language: nl\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: culturefeed-my-program-list.tpl.php:20
 msgid "Print program"
-msgstr "Print programma"
+msgstr "Druk mijn programma af"
 
 #: culturefeed_my_program.admin.inc:22
 msgid "Empty text"
@@ -55,11 +55,11 @@ msgstr "U moet inloggen alvorens u iets kan toevoegen aan uw programma."
 
 #: culturefeed_my_program.module:178
 msgid "%title has been added to <a href=\"@url\">your program</a>."
-msgstr "%title is toegevoegd aan <a href=\"@url\">uw program</a>."
+msgstr "%title is toegevoegd aan <a href=\"@url\">uw programma</a>."
 
 #: culturefeed_my_program.module:194
 msgid "%title has been removed from <a href=\"@url\">your program</a>."
-msgstr "%title is verwijderd uit <a href=\"@url\">uw program</a>."
+msgstr "%title is verwijderd uit <a href=\"@url\">uw programma</a>."
 
 #: culturefeed_my_program.module:225
 msgid "Clear my program"
