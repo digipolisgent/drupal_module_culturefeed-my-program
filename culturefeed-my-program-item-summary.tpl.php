@@ -12,6 +12,6 @@
 <?php if (!empty($shortdescription)): ?>
   <p class="short-description"><?php print $shortdescription; ?></p>
 <?php endif; ?>
-<?php if (!empty($add_to_my_program)): ?>
-  <?php print $add_to_my_program; ?>
+<?php if (!empty($remove_from_my_program)): ?>
+  <?php print $remove_from_my_program; ?>
 <?php endif; ?>

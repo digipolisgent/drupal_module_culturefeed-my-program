@@ -25,6 +25,15 @@ function culturefeed_my_program_menu() {
     'weight' => -1,
   ];
 
+  $items['my-program/remove/%culturefeed_agenda_event'] = [
+    'title' => 'Remove from my program',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['culturefeed_my_program_confirm_remove', 2],
+    'access arguments' => ['access content'],
+    'file' => $file,
+    'type' => MENU_NORMAL_ITEM,
+  ];
+
   $items[CULTUREFEED_MY_PROGRAM_ADMIN_PATH] = [
     'title' => 'CultureFeed My program',
     'description' => 'Administer my program configuration.',
@@ -83,6 +92,11 @@ function culturefeed_my_program_preprocess_culturefeed_my_program_list(&$variabl
 function culturefeed_my_program_preprocess_culturefeed_my_program_item_summary(&$variables) {
   module_load_include('inc', 'culturefeed_agenda', 'theme/theme');
   culturefeed_agenda_preprocess_culturefeed_event_short_summary($variables);
+  /* @var $item \CultuurNet\Search\ActivityStatsExtendedEntity */
+  $item = $variables['item'];
+  $variables['remove_from_my_program'] = l(t('Remove from my program'), sprintf('my-program/remove/%s', $item->getId()), [
+    'query' => ['destination' => 'my-program'],
+  ]);
 }
 
 /**
@@ -179,6 +193,7 @@ function culturefeed_my_program_add_form_submit_add($form, $form_state) {
       '%title' => $detail->getTitle(),
       '@url' => url('my-program'),
     ]));
+
   }
 }
 

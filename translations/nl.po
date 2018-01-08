@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-12-20 14:11+0100\n"
-"PO-Revision-Date: 2017-12-20 14:11+0100\n"
+"POT-Creation-Date: 2018-01-08 17:24+0100\n"
+"PO-Revision-Date: 2018-01-08 17:24+0100\n"
 "Last-Translator: Wesley De Vrient <wesley.devrient@digipolis.gent>\n"
 "Language-Team: Digipolis Gent <tbweb@digpolis.gent>\n"
 "Language: nl\n"
@@ -29,39 +29,43 @@ msgstr "Lege tekst"
 msgid "Text shown when a user visits /my-program when there are no items in his list."
 msgstr "Tekst getoond wanneer een gebruiker /my-program bezoekt zonder dat er items zijn lijst staan."
 
-#: culturefeed_my_program.page.inc:24
+#: culturefeed_my_program.page.inc:26
 msgid "No items have been added to your program yet."
 msgstr "Er zijn nog geen items toegevoegd aan uw programma."
 
-#: culturefeed_my_program.module:47
-msgid "Administer CultureFeed My program settings"
-msgstr "Beheer CultureFeed Mijn programma instellingen"
+#: culturefeed_my_program.page.inc:71
+msgid "Remove %name from your program?"
+msgstr "Verwijder %name uit uw programma?"
 
-#: culturefeed_my_program.module:48
-msgid "Manage CultureFeed My program settings."
-msgstr "Beheer CultureFeed Mijn programma instellingen"
-
-#: culturefeed_my_program.module:131;147
-msgid "Add to my program"
-msgstr "Voeg toe aan mijn programma"
-
-#: culturefeed_my_program.module:147
-msgid "Remove from my program"
-msgstr "Verwijder uit mijn programma"
-
-#: culturefeed_my_program.module:158
-msgid "You need to login before you can add something to your program."
-msgstr "U moet inloggen alvorens u iets kan toevoegen aan uw programma."
-
-#: culturefeed_my_program.module:178
-msgid "%title has been added to <a href=\"@url\">your program</a>."
-msgstr "%title is toegevoegd aan <a href=\"@url\">uw programma</a>."
-
-#: culturefeed_my_program.module:194
+#: culturefeed_my_program.page.inc:86 culturefeed_my_program.module:209
 msgid "%title has been removed from <a href=\"@url\">your program</a>."
 msgstr "%title is verwijderd uit <a href=\"@url\">uw programma</a>."
 
-#: culturefeed_my_program.module:225
+#: culturefeed_my_program.module:56
+msgid "Administer CultureFeed My program settings"
+msgstr "Beheer CultureFeed Mijn programma instellingen"
+
+#: culturefeed_my_program.module:57
+msgid "Manage CultureFeed My program settings."
+msgstr "Beheer CultureFeed Mijn programma instellingen"
+
+#: culturefeed_my_program.module:29;97;161
+msgid "Remove from my program"
+msgstr "Verwijder uit mijn programma"
+
+#: culturefeed_my_program.module:145;161
+msgid "Add to my program"
+msgstr "Voeg toe aan mijn programma"
+
+#: culturefeed_my_program.module:172
+msgid "You need to login before you can add something to your program."
+msgstr "U moet inloggen alvorens u iets kan toevoegen aan uw programma."
+
+#: culturefeed_my_program.module:192
+msgid "%title has been added to <a href=\"@url\">your program</a>."
+msgstr "%title is toegevoegd aan <a href=\"@url\">uw programma</a>."
+
+#: culturefeed_my_program.module:240
 msgid "Clear my program"
 msgstr "Maak programma leeg"
 
@@ -69,11 +73,11 @@ msgstr "Maak programma leeg"
 msgid "My program"
 msgstr "Mijn programma"
 
-#: culturefeed_my_program.module:29
+#: culturefeed_my_program.module:38
 msgid "CultureFeed My program"
 msgstr "CultureFeed Mijn programma"
 
-#: culturefeed_my_program.module:30
+#: culturefeed_my_program.module:39
 msgid "Administer my program configuration."
 msgstr "Beheer mijn programma configuratie."
 
