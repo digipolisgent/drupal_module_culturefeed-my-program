@@ -280,18 +280,25 @@ function _culturefeed_my_program_cron_update_end_date($update_delay, $max_item =
     ->range(0, $max_item);
 
   foreach ($query->execute() as $row) {
-    $item = culturefeed_agenda_event_load($row->item_id);
-    $end_date = strtotime($item->getEntity()->getAvailableTo());
+    if ($item = culturefeed_agenda_event_load($row->item_id)) {
+      $end_date = strtotime($item->getEntity()->getAvailableTo());
 
-    // Because we need to update last_updated anyway, we update the end_date
-    // regardless of whether it has changed or not.
-    db_update(CulturefeedMyProgramItem::CULTUREFEED_MY_PROGRAM_TABLE)
-      ->fields([
-        'end_date' => $end_date,
-        'last_updated' => $now,
-      ])
-      ->condition('item_id', $item->getId())
-      ->execute();
+      // Because we need to update last_updated anyway, we update the end_date
+      // regardless of whether it has changed or not.
+      db_update(CulturefeedMyProgramItem::CULTUREFEED_MY_PROGRAM_TABLE)
+        ->fields([
+          'end_date' => $end_date,
+          'last_updated' => $now,
+        ])
+        ->condition('item_id', $item->getId())
+        ->execute();
+    }
+    else {
+      // Delete the item, if it no longer exists on the culturefeed service.
+      db_delete(CulturefeedMyProgramItem::CULTUREFEED_MY_PROGRAM_TABLE)
+        ->condition('item_id', $row->item_id)
+        ->execute();
+    }
   }
 }
 
